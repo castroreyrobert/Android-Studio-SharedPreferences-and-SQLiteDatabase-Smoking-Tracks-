@@ -1,5 +1,6 @@
 package com.example.castroreyrobert.sharedpreferencesdemo;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,8 +22,8 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     private TextView tvDate, tvSticks;
-    String sticks_pref;
     int sticks;
+    private DBAdapter dbAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +35,27 @@ public class MainActivity extends AppCompatActivity {
         Button buttonSubtract = (Button)findViewById(R.id.buttonSubtract);
         tvSticks = (TextView)findViewById(R.id.tvSticks);
         tvDate = (TextView)findViewById(R.id.tvDate);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        dbAdapter = new DBAdapter(this);
+
+        FloatingActionButton fabSave = (FloatingActionButton) findViewById(R.id.fabSave);
+        fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                dbAdapter.open();
+                dbAdapter.addSmoker(tvDate.getText().toString(), tvSticks.getText().toString());
+
+                Toast.makeText(MainActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
+                dbAdapter.close();
+            }
+        });
+
+        FloatingActionButton fabOverview = (FloatingActionButton) findViewById(R.id.fabOverview);
+        fabOverview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext()
+                        , OverviewActivity.class);
+                startActivity(intent);
             }
         });
 
