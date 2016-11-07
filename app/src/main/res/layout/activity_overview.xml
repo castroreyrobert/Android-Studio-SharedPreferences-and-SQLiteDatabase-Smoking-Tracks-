@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.castroreyrobert.sharedpreferencesdemo.OverviewActivity"
-    tools:showIn="@layout/activity_overview">
+    tools:showIn="@layout/activity_overview"
+    android:background="#9E9E9E">
 
     <fragment
         android:name="com.example.castroreyrobert.sharedpreferencesdemo.OverviewActivityFragment"

@@ -11,14 +11,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.castroreyrobert.sharedpreferencesdemo.MainActivity"
-    tools:showIn="@layout/activity_main">
-
-    <TextView
-        android:id="@+id/tvDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Date"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
+    tools:showIn="@layout/activity_main"
+    android:background="@color/colorPrimaryDark">
 
     <TextView
         android:text="Number of Sticks:"
@@ -28,7 +22,7 @@
         android:id="@+id/textView2"
         android:layout_below="@+id/tvDate"
         android:layout_centerHorizontal="true"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"/>
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium.Inverse"/>
 
     <TextView
         android:text="0"
@@ -48,7 +42,9 @@
         android:layout_toLeftOf="@+id/textView2"
         android:layout_toStartOf="@+id/textView2"
         android:layout_marginTop="114dp"
-        android:id="@+id/buttonAdd" />
+        android:id="@+id/buttonAdd"
+        android:textSize="50dp"
+        style="@style/Widget.AppCompat.Button.Colored" />
 
     <Button
         android:text="-"
@@ -57,6 +53,18 @@
         android:layout_alignBottom="@+id/buttonAdd"
         android:layout_toRightOf="@+id/textView2"
         android:layout_toEndOf="@+id/textView2"
-        android:id="@+id/buttonSubtract" />
+        android:id="@+id/buttonSubtract"
+        android:textSize="50dp"
+        style="@style/Widget.AppCompat.Button.Colored"/>
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large.Inverse" />
 
 </RelativeLayout>

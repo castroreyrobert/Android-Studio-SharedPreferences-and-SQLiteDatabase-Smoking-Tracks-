@@ -62,6 +62,12 @@ public class DBAdapter {
 
     }
 
+
+
+    public long deleteSmoker(long idtoDelete){
+        return db.delete(TB_NAME, COL_ID + " = " + idtoDelete, null);
+    }
+
     public ArrayList<SmokerModel> getAllSmoke(){
         ArrayList<SmokerModel> arrayList = new ArrayList<SmokerModel>();
 
