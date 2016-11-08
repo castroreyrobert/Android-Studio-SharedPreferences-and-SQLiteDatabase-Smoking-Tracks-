@@ -35,25 +35,26 @@
         android:layout_marginTop="12dp" />
 
     <Button
-        android:text="+"
+        android:text="-"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvSticks"
         android:layout_toLeftOf="@+id/textView2"
         android:layout_toStartOf="@+id/textView2"
         android:layout_marginTop="114dp"
-        android:id="@+id/buttonAdd"
+        android:id="@+id/buttonSubtract"
         android:textSize="50dp"
         style="@style/Widget.AppCompat.Button.Colored" />
 
+
     <Button
-        android:text="-"
+        android:text="+"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/buttonAdd"
+        android:layout_alignBottom="@+id/buttonSubtract"
         android:layout_toRightOf="@+id/textView2"
         android:layout_toEndOf="@+id/textView2"
-        android:id="@+id/buttonSubtract"
+        android:id="@+id/buttonAdd"
         android:textSize="50dp"
         style="@style/Widget.AppCompat.Button.Colored"/>
 

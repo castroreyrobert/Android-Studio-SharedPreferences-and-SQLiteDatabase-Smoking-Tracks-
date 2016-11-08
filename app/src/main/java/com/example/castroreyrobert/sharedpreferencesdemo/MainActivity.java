@@ -40,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
         dbAdapter = new DBAdapter(this);
 
         FloatingActionButton fabSave = (FloatingActionButton) findViewById(R.id.fabSave);
-
-
         FloatingActionButton fabOverview = (FloatingActionButton) findViewById(R.id.fabOverview);
         fabOverview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,10 +66,9 @@ public class MainActivity extends AppCompatActivity {
 
         final SharedPreferences pref = getSharedPreferences("my_pref", MODE_PRIVATE);
 
+        // Getting the SharedPreferences for the sticks
         final String sticks_pref = pref.getString(todayDateTimeString, "0");
-
-        final int save = pref.getInt("As" + todayDateTimeString, 0);
-
+       final boolean isSaved = pref.getBoolean("As of " + todayDateTimeString, false);
 
         sticks = Integer.parseInt(sticks_pref);
 
@@ -81,13 +78,11 @@ public class MainActivity extends AppCompatActivity {
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 sticks ++;
-
+                //Putting the SharedPreferences
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString(todayDateTimeString, String.valueOf(sticks));
                 editor.commit();
-
                 tvSticks.setText(sticks + "");
             }
         });
@@ -99,11 +94,9 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "You haven't smoked today!", Toast.LENGTH_SHORT).show();
                 }else {
                     sticks --;
-
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putString(todayDateTimeString, String.valueOf(sticks));
                     editor.commit();
-
                     tvSticks.setText(sticks + "");
                 }
             }
@@ -112,17 +105,26 @@ public class MainActivity extends AppCompatActivity {
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 dbAdapter.open();
-                dbAdapter.addSmoker(tvDate.getText().toString(), tvSticks.getText().toString());
+                if (!isSaved){
+                    dbAdapter.addSmoker(tvDate.getText().toString(), tvSticks.getText().toString());
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putBoolean("As of " + todayDateTimeString, true);
+                    editor.commit();
+                    Toast.makeText(MainActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
+                }else {
+                    boolean isUpdate = dbAdapter.updateSmoke(tvDate.getText().toString(), tvSticks.getText().toString());
+                    if (isUpdate){
+                        Toast.makeText(MainActivity.this, "Edited!", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 dbAdapter.close();
-                Toast.makeText(MainActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
 
                 //Displaying Notification
                 NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(getApplicationContext());
                 nBuilder.setSmallIcon(R.drawable.iconlistview);
                 nBuilder.setContentTitle("Successfully Saved!");
-                nBuilder.setContentText("As of" + todayDateTimeString + "!");
+                nBuilder.setContentText("As of " + todayDateTimeString + "!");
 
                 NotificationManager notificationManager =
                         (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -134,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -154,5 +156,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 }

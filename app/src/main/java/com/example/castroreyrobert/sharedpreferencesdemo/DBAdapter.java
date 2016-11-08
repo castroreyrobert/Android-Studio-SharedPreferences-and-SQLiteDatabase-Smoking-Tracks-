@@ -62,6 +62,13 @@ public class DBAdapter {
 
     }
 
+    public boolean updateSmoke(String date, String sticks){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_STICKS, sticks);
+        db.update(TB_NAME, contentValues, "DATE = ?", new String[]{date});
+        return true;
+    }
+
 
 
     public long deleteSmoker(long idtoDelete){
