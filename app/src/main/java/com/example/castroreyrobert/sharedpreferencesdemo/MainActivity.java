@@ -6,13 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
                 //Putting the SharedPreferences
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString(todayDateTimeString, String.valueOf(sticks));
-                editor.commit();
-                tvSticks.setText(sticks + "");
+                editor.apply();
+                tvSticks.setText(String.valueOf(sticks));
             }
         });
 
@@ -96,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
                     sticks --;
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putString(todayDateTimeString, String.valueOf(sticks));
-                    editor.commit();
-                    tvSticks.setText(sticks + "");
+                    editor.apply();
+                    tvSticks.setText(String.valueOf(sticks));
                 }
             }
         });
@@ -105,30 +102,35 @@ public class MainActivity extends AppCompatActivity {
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbAdapter.open();
-                if (!isSaved){
-                    dbAdapter.addSmoker(tvDate.getText().toString(), tvSticks.getText().toString());
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.putBoolean("As of " + todayDateTimeString, true);
-                    editor.commit();
-                    Toast.makeText(MainActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
-                }else {
-                    boolean isUpdate = dbAdapter.updateSmoke(tvDate.getText().toString(), tvSticks.getText().toString());
-                    if (isUpdate){
-                        Toast.makeText(MainActivity.this, "Edited!", Toast.LENGTH_SHORT).show();
+
+                if (sticks != 0 ) {
+                    dbAdapter.open();
+                    if (!isSaved) {
+                        dbAdapter.addSmoker(tvDate.getText().toString(), tvSticks.getText().toString());
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putBoolean("As of " + todayDateTimeString, true);
+                        editor.apply();
+                        Toast.makeText(MainActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        boolean isUpdate = dbAdapter.updateSmoke(tvDate.getText().toString(), tvSticks.getText().toString());
+                        if (isUpdate) {
+                            Toast.makeText(MainActivity.this, "Edited!", Toast.LENGTH_SHORT).show();
+                        }
                     }
+                    dbAdapter.close();
+
+                    //Displaying Notification
+                    NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(getApplicationContext());
+                    nBuilder.setSmallIcon(R.drawable.iconlistview);
+                    nBuilder.setContentTitle("Successfully Saved!");
+                    nBuilder.setContentText("As of " + todayDateTimeString + "!");
+
+                    NotificationManager notificationManager =
+                            (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(notificationID, nBuilder.build());
+                }else {
+                    Toast.makeText(MainActivity.this, "Cannot be saved!", Toast.LENGTH_SHORT).show();
                 }
-                dbAdapter.close();
-
-                //Displaying Notification
-                NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(getApplicationContext());
-                nBuilder.setSmallIcon(R.drawable.iconlistview);
-                nBuilder.setContentTitle("Successfully Saved!");
-                nBuilder.setContentText("As of " + todayDateTimeString + "!");
-
-                NotificationManager notificationManager =
-                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(notificationID,nBuilder.build());
             }
         });
     }

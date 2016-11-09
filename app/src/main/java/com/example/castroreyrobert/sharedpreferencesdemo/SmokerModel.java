@@ -30,15 +30,9 @@ public class SmokerModel {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
 
     public String getSticks() {
         return sticks;
     }
 
-    public void setSticks(String sticks) {
-        this.sticks = sticks;
-    }
 }

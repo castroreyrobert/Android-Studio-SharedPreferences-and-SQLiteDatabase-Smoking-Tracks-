@@ -43,7 +43,7 @@ public class SmokeAdapter extends ArrayAdapter<SmokerModel>{
         return convertView;
     }
 
-    static class ViewHolder{
+    private static class ViewHolder{
         TextView tvDate2, tvSticks2;
     }
 }
